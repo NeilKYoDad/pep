@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.Identity.Web;
 using Serilog;
 using Microsoft.AspNetCore.Diagnostics;
-using FluentValidation.AspNetCore;
 using FluentValidation;
 using Pep.Admin.WebApi.Validators;
+using Pep.Admin.WebApi.Filters;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -57,14 +57,18 @@ builder.Services.AddCors(options =>
         });
 });
 
-builder.Services.AddControllers()
+builder.Services.AddScoped<FluentValidationActionFilter>();
+
+builder.Services.AddControllers(options =>
+    {
+        options.Filters.Add<FluentValidationActionFilter>();
+    })
     .AddJsonOptions(options =>
     {
         options.JsonSerializerOptions.PropertyNamingPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
         options.JsonSerializerOptions.DictionaryKeyPolicy = System.Text.Json.JsonNamingPolicy.CamelCase;
     });
 
-builder.Services.AddFluentValidationAutoValidation();
 builder.Services.AddValidatorsFromAssemblyContaining<CreateSurveyValidator>();
 
 builder.Services.AddEndpointsApiExplorer();
