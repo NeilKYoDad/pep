@@ -1,0 +1,132 @@
+<div class="container-fluid">
+  <app-loading [isLoading]="isLoading" message="Loading surveys..."></app-loading>
+
+  <div *ngIf="error" class="alert alert-danger py-2 px-3">{{ error }}</div>
+
+  <div *ngIf="!isLoading && !error && surveys.length === 0" class="alert alert-info py-2 px-3 d-flex justify-content-between align-items-center">
+    <span>No surveys found.</span>
+    <button class="btn btn-primary" (click)="openCreateModal()">
+      <i class="bi bi-plus-circle me-2"></i>Create Survey
+    </button>
+  </div>
+
+
+  <div class="table-responsive" *ngIf="!isLoading && surveys && !error && surveys.length > 0">
+      <div class="mb-3 d-flex gap-3">
+          <div class="flex-fill">
+              <input type="text" [(ngModel)]="nameFilter" (ngModelChange)="page = 1" placeholder="Search by survey" class="form-control" />
+          </div>
+          <!-- <div class="flex-fill">
+              <select [ngModel]="surveyTypeFilter" (ngModelChange)="onSurveyTypeFilterChange($event)" class="form-select">
+                  <option value="">All sruvey types</option>
+                  <option *ngFor="let d of uniqueDomains" [value]="d">{{ d }}</option>
+              </select>
+          </div>
+          <div class="flex-fill" style="max-width: 180px;">
+              <select [(ngModel)]="metricTypeFilter" (ngModelChange)="onMetricTypeFilterChange($event)"
+                  class="form-select">
+                  <option value="all">All types</option>
+                  <option value="manual">Manual</option>
+                  <option value="automated">Automated</option>
+              </select>
+          </div> -->
+        <button class="btn btn-primary" (click)="openCreateModal()">
+          <i class="bi bi-plus-circle me-2"></i>Create Survey
+        </button>
+
+      </div>
+      <table class="table table-sm table-striped table-hover align-middle mb-0" style="width: 100%; table-layout: fixed;">
+          <thead class="table-light">
+              <tr>
+                  <!-- <th scope="col">ID</th> -->
+                  <th scope="col" sortable="surveyName" (sort)="onSort($event)" [style.width]="nameColumnWidth">Name</th>
+                  <th scope="col" sortable="description" (sort)="onSort($event)" [style.width]="descriptionColumnWidth">Description</th>
+                  <th scope="col" sortable="createdAt" (sort)="onSort($event)" [style.width]="createdColumnWidth">Created</th>
+                  <th scope="col" sortable="updatedAt" (sort)="onSort($event)" [style.width]="updatedColumnWidth">Updated</th>
+              </tr>
+          </thead>
+          <tbody>
+              <tr *ngFor="let s of pagedSurveys; trackBy: trackById" (click)="viewSurvey(s)"
+                  style="cursor: pointer;">
+                  <td style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;" 
+                      [title]="s.surveyName">{{ s.surveyName }}</td>
+                  <td style="overflow: hidden; text-overflow: ellipsis; white-space: nowrap;"
+                      [title]="s.description">
+                      {{ s.description }}
+                  </td>
+                  <td>{{ s.createdAt | date:'short' }}</td>                  
+                  <td>{{ s.updatedAt ? (s.updatedAt | date:'short') : 'N/A'}}</td>
+              </tr>
+          </tbody>
+      </table>
+
+      <div class="mt-3 d-flex justify-content-end align-items-center">
+          <div class="page-info me-3">{{ pageInfo }}</div>
+          <ngb-pagination [collectionSize]="collectionSize" [(page)]="page" [pageSize]="pageSize" [maxSize]="5"
+              [boundaryLinks]="true" [rotate]="true">
+          </ngb-pagination>
+      </div>
+  </div>
+
+</div>
+
+<!-- Create Survey Modal -->
+<div class="modal fade" [class.show]="showCreateModal" [style.display]="showCreateModal ? 'block' : 'none'" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">
+          <i class="bi bi-plus-circle me-2"></i>Create New Survey
+        </h5>
+        <button type="button" class="btn-close" (click)="closeCreateModal()" [disabled]="creating"></button>
+      </div>
+      <div class="modal-body">
+        <div *ngIf="validationError" class="alert alert-danger" role="alert">
+          <i class="bi bi-exclamation-triangle me-2"></i>{{ validationError }}
+        </div>
+        <form>
+          <div class="mb-3">
+            <label for="surveyName" class="form-label">Name <span class="text-danger">*</span></label>
+            <input 
+              type="text" 
+              class="form-control" 
+              id="surveyName" 
+              [(ngModel)]="newSurvey.surveyName" 
+              name="name"
+              [disabled]="creating"
+              required
+            />
+          </div>
+          <div class="mb-3">
+            <label for="surveyDescription" class="form-label">Description <span class="text-danger">*</span></label>
+            <textarea 
+              class="form-control" 
+              id="surveyDescription" 
+              rows="3"
+              [(ngModel)]="newSurvey.description"
+              name="description"
+              [disabled]="creating"
+              required
+            ></textarea>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" (click)="closeCreateModal()" [disabled]="creating">
+          Cancel
+        </button>
+        <button 
+          type="button" 
+          class="btn btn-primary" 
+          (click)="createSurvey()" 
+          [disabled]="creating"
+        >
+          <span *ngIf="creating" class="spinner-border spinner-border-sm me-2"></span>
+          <i *ngIf="!creating" class="bi bi-check-circle me-2"></i>
+          {{ creating ? 'Creating...' : 'Create' }}
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+<div class="modal-backdrop fade" [class.show]="showCreateModal" *ngIf="showCreateModal"></div>

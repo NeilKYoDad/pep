@@ -1,0 +1,53 @@
+<nav class="navbar navbar-expand navbar-dark bg-primary">
+  <div class="container-fluid">
+
+    <a class="navbar-brand d-flex align-items-center" routerLink="/">
+      <img src="assets/nhs.jpg" alt="NHS Logo"
+        style="height:32px; margin-right:10px; background:white; border-radius:4px;" />
+      {{ title }}
+    </a>
+    <div class="collapse navbar-collapse">
+      <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+        <!-- <li class="nav-item">
+          <a class="nav-link" [routerLink]="['webapi-test']">API Test</a>
+        </li> -->
+        <!-- TODO remove this -->
+        <li class="nav-item">
+          <a class="nav-link" [routerLink]="['auth-test']">Auth Test</a>
+        </li>
+      </ul>
+      <div class="d-flex align-items-center">
+        <div class="dropdown">
+          <button class="btn btn-primary dropdown-toggle border-0 d-flex align-items-center" type="button"
+            id="profileMenuButton" data-bs-toggle="dropdown" aria-expanded="false" title="Account">
+            <span *ngIf="loginDisplay" class="me-2 email-label">{{ userPrincipalName }}</span>
+            <span class="avatar-circle me-2">
+              <ng-container *ngIf="loginDisplay; else iconFallback">{{ userInitials }}</ng-container>
+              <ng-template #iconFallback>
+                <i class="bi bi-person"></i>
+              </ng-template>
+            </span>
+            <span *ngIf="!loginDisplay">Sign in</span>
+          </button>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="profileMenuButton">
+            <ng-container *ngIf="loginDisplay; else signedOutMenu">
+              <li class="dropdown-header">
+                <div class="fw-semibold text-truncate d-block w-100" [attr.title]="displayName || null">{{ displayName
+                  || 'Signed in' }}</div>
+                <div class="text-muted small">{{ userPrincipalName }}</div>
+              </li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item" [routerLink]="['/profile']">View profile</a></li>
+              <li><a class="dropdown-item" (click)="logoutRedirect()">Logout</a></li>
+            </ng-container>
+            <ng-template #signedOutMenu>
+              <li><a class="dropdown-item" (click)="loginRedirect()">Sign in</a></li>
+            </ng-template>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</nav>

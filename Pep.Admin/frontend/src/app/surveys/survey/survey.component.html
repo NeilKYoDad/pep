@@ -1,0 +1,133 @@
+<div class="container-fluid">
+
+  <ng-container *ngIf="survey">
+    <div class="bg-primary opacity-75 text-white p-3 mb-3 rounded">
+      <div class="d-flex flex-wrap align-items-center justify-content-between gap-3 mb-2">
+        <h1 class="h4 mb-0 metric-title-banner d-flex flex-wrap align-items-center gap-3">
+          <span><i class="bi bi-clipboard-data me-1"></i>{{ survey.surveyCode }} - {{ survey.surveyName }}</span>
+          <a *ngIf="publishedSurveyUrl"
+             [routerLink]="['/submissions', survey?.publishedUrlGuid]"
+             class="btn btn-sm btn-light text-primary d-flex align-items-center gap-1">
+            <i class="bi bi-box-arrow-up-right"></i>
+            <span>View Published</span>
+          </a>
+        </h1>
+        <div class="small text-white-50 text-end d-flex flex-column" *ngIf="survey.createdAt || survey.updatedAt">
+          <span *ngIf="survey.createdAt">
+            Created {{ survey.createdAt | date:'short' }}
+            <span *ngIf="survey.createdByName"> by {{ survey.createdByName }}</span>
+          </span>
+          <span *ngIf="survey.updatedAt">
+            Updated {{ survey.updatedAt | date:'short' }}
+            <span *ngIf="survey.updatedByName"> by {{ survey.updatedByName }}</span>
+          </span>
+        </div>
+      </div>
+      <div *ngIf="survey.description" class="survey-description" [title]="survey.description">
+        {{ survey.description }}
+      </div>
+    </div>
+  </ng-container>
+
+  <div *ngIf="survey" class="d-flex flex-wrap justify-content-between align-items-center gap-2 mb-2">
+    <nav aria-label="breadcrumb" class="mb-0">
+      <ol class="breadcrumb mb-0">
+        <li class="breadcrumb-item"><a routerLink="/surveys">Surveys</a></li>
+        <li class="breadcrumb-item active" aria-current="page">{{ survey.surveyName }}</li>
+      </ol>
+    </nav>
+    <button class="btn btn-primary"
+            type="button"
+            (click)="addSurveyVersion()"
+            [disabled]="addingVersion">
+      <span *ngIf="addingVersion" class="spinner-border spinner-border-sm me-2" role="status"></span>
+      <i *ngIf="!addingVersion" class="bi bi-plus-circle me-2"></i>
+      {{ addingVersion ? 'Adding Version...' : 'Add Version' }}
+    </button>
+  </div>
+
+  <app-loading [isLoading]="isLoading" message="Loading survey..."></app-loading>
+
+  <div *ngIf="!isLoading" class="row">
+    <div class="col-12">
+
+      <!-- Versions List -->
+      <div class="card">
+        <div class="card-header">
+          <h5 class="mb-0">
+            <i class="bi bi-clock-history me-2"></i>Versions ({{ survey?.surveyVersions?.length }})
+          </h5>
+        </div>
+        <div class="card-body">
+          <div *ngIf="(survey?.surveyVersions?.length ?? 0) === 0" class="alert alert-info">
+            No versions found for this survey.
+          </div>
+          
+          <div *ngIf="(survey?.surveyVersions?.length ?? 0) > 0" class="table-responsive">
+            <table class="table table-striped">
+              <thead>
+                <tr>
+                  <th>Version</th>
+                  <th>Status</th>
+                  <th>Created</th>
+                  <th>Created By</th>
+                  <th>Change Notes</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr *ngFor="let version of survey?.surveyVersions">
+                  <td>
+                    <strong>v{{ version.versionNumber }}</strong>
+                    <!-- <span *ngIf="survey.currentVersionId === version.surveyVersionId" class="badge bg-success ms-2">Current</span> -->
+                  </td>
+                  <td>
+                    <span class="badge" 
+                          [ngClass]="{
+                            'bg-secondary': version.statusName === 'Draft',
+                            'bg-info': version.statusName === 'Approved',
+                            'bg-success': version.statusName === 'Published',
+                            'bg-warning': version.statusName === 'Retired'
+                          }">
+                      {{ version.statusName }}
+                    </span>
+                  </td>
+                  <td>{{ version.createdAt | date:'short' }}</td>
+                  <td>{{ version.createdByName || 'Unknown' }}</td>
+                  <td>{{ version.changeNotes || '-' }}</td>
+                  <td>
+                    <div class="d-flex flex-wrap gap-2">
+                      <button class="btn btn-sm btn-outline-primary"
+                              (click)="openSurveyBuilder(version.surveyVersionId)"
+                              title="Edit in Survey Builder">
+                        <i class="bi bi-pencil-square"></i> Edit
+                      </button>
+                      <button class="btn btn-sm btn-outline-secondary"
+                              (click)="approveVersion(version)"
+                              title="Approve this version">
+                        <i class="bi bi-check2-circle"></i>
+                        <span class="ms-1">Approve</span>
+                      </button>
+                      <button class="btn btn-sm btn-outline-success"
+                              (click)="publishVersion(version)"
+                              title="Publish this version">
+                        <i class="bi bi-upload"></i>
+                        <span class="ms-1">Publish</span>
+                      </button>
+                      <button class="btn btn-sm btn-outline-warning"
+                              (click)="retireVersion(version)"
+                              title="Retire this version">
+                        <i class="bi bi-box-arrow-down"></i>
+                        <span class="ms-1">Retire</span>
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

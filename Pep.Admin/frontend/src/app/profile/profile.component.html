@@ -1,0 +1,8 @@
+<div>
+    <p><strong>Display Name: </strong> {{profile?.displayName}}</p>
+    <p><strong>User Principal Name: </strong> {{profile?.userPrincipalName}}</p>
+    <p><strong>First Name: </strong> {{profile?.givenName}}</p>
+    <p><strong>Last Name: </strong> {{profile?.surname}}</p>
+    <p><strong>Id: </strong> {{profile?.id}}</p>
+    <p><strong>Roles: </strong> {{ roles.length ? roles.join(', ') : 'None' }}</p>
+</div>

@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - PEP Collection</title>
+
+    <!-- NOTE: Ensure these match the package versions used in PEP.Admin frontend -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/formiojs@4.21.7/dist/formio.full.min.css">
+</head>
+<body>
+    <div class="container">
+        @RenderBody()
+    </div>
+
+    <!-- NOTE: Ensure these match the package versions used in PEP.Admin frontend -->
+    <script src="https://cdn.jsdelivr.net/npm/formiojs@4.21.7/dist/formio.full.min.js"></script>
+    @RenderSection("Scripts", required: false)
+</body>
+</html>

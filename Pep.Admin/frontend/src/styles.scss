@@ -1,0 +1,11 @@
+// NHS Blue as Bootstrap primary color
+$primary: #005EB8;
+
+// Import Bootstrap after variable override
+@import "bootstrap/scss/bootstrap";
+@import "bootstrap-icons/font/bootstrap-icons.css";
+@import "formiojs/dist/formio.full.min.css";
+
+:root {
+	--app-navbar-height: 58px; /* used in a few places to calculate scrollbars etc */
+}

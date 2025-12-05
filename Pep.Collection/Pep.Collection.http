@@ -1,0 +1,15 @@
+@pep_collection_HostAddress = http://localhost:5076
+@surveyGuid = 00000000-0000-0000-0000-000000000000
+
+### Load the published survey (Form.io HTML)
+GET {{pep_collection_HostAddress}}/survey/{{surveyGuid}}
+Accept: text/html
+
+### Submit a survey response
+POST {{pep_collection_HostAddress}}/survey/{{surveyGuid}}/submit
+Content-Type: application/json
+Accept: application/json
+
+{
+  "submission": "{ \"exampleField\": \"example value\" }"
+}

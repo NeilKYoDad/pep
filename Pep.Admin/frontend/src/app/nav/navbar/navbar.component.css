@@ -1,0 +1,29 @@
+.navbar {
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+    margin-bottom: 0 !important;
+}
+
+.settings-cog-toggle::after {
+    border-top-color: #fff !important;
+}
+
+.avatar-circle {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.2);
+    color: #fff;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    letter-spacing: .5px;
+}
+
+.email-label {
+    max-width: 240px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}

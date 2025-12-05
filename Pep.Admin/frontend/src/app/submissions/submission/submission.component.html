@@ -1,0 +1,37 @@
+<div class="container py-4">
+  <a routerLink="/surveys" class="btn btn-link px-0 mb-3">← Back to surveys</a>
+
+  <div *ngIf="isLoading" class="alert alert-info">Loading published survey…</div>
+  <div *ngIf="error" class="alert alert-danger">{{ error }}</div>
+
+  <ng-container *ngIf="!isLoading && !error && survey">
+    <div class="card mb-4">
+      <div class="card-body">
+        <h1 class="h4 mb-1">{{ survey.surveyCode }} · {{ survey.surveyName }}</h1>
+        <p class="text-muted mb-0">
+          {{ survey.description || 'No description available.' }}
+        </p>
+        <small class="text-secondary" *ngIf="survey.publishedAt">
+          Published {{ survey.publishedAt | date: 'medium' }}
+        </small>
+      </div>
+    </div>
+
+    <div class="card mb-4" *ngIf="survey?.surveySchemaJson">
+      <div class="card-header">Interactive Preview</div>
+      <div class="card-body">
+        <formio [form]="formDefinition" [submission]="submissionData" (submit)="onSubmit($event)"></formio>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-header d-flex justify-content-between align-items-center">
+        <span>Form.io JSON Schema</span>
+        <code class="text-muted">GUID: {{ survey.publishedUrlGuid }}</code>
+      </div>
+      <div class="card-body">
+        <pre class="schema-block"><code>{{ schemaPretty }}</code></pre>
+      </div>
+    </div>
+  </ng-container>
+</div>

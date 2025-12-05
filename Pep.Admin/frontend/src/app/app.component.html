@@ -1,0 +1,18 @@
+<app-navbar [title]="title"></app-navbar>
+<div class="app-shell d-flex">
+  <div class="sidebar-wrapper" id="primarySidebar">
+    <app-sidebar></app-sidebar>
+  </div>
+  <main class="flex-grow-1 px-3 pb-4">
+    <!--This is to avoid reload during acquireTokenSilent() because of hidden iframe -->
+    @if (!isIframe) {
+      <router-outlet></router-outlet>
+    }
+  </main>
+</div>
+<!-- Toasts: positioned bottom center -->
+<div class="toast-container position-fixed bottom-0 start-50 translate-middle-x p-3" style="z-index: 9999;">
+  <ngb-toast *ngIf="toast" [header]="toast.header" [autohide]="false" [delay]="5000" (hidden)="removeToast()" [ngClass]="getToastClass(toast.type)" style="min-width: 600px;">
+    {{ toast.message }}
+  </ngb-toast>
+</div>

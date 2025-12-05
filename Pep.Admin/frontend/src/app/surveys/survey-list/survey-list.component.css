@@ -1,0 +1,16 @@
+th.asc::after {
+  content: ' ▲';
+  color: #464545;
+}
+
+th.desc::after {
+  content: ' ▼';
+  color: #464545;
+}
+
+.page-info {
+  display: inline-flex;
+  align-items: center;
+  height: 2.5rem;
+  padding: 0 0.25rem 1rem;
+}

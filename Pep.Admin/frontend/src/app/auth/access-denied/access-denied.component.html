@@ -1,0 +1,17 @@
+<div class="container-fluid py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6 text-center">
+      <div class="alert alert-danger" role="alert">
+        <div class="mb-3">
+          <i class="bi bi-shield-exclamation" style="font-size: 3rem; color: #dc3545;"></i>
+        </div>
+        <h4 class="alert-heading">Access Denied</h4>
+        <p *ngIf="isUnauthenticated">You are not <strong>authenticated</strong> with the PEP application.<br><br>Ask your administrator to grant you access.</p>
+        <p *ngIf="!isUnauthenticated">You are not <strong>authorized</strong> to view this page.<br>Ask your administrator to grant you access.</p>
+        <hr>
+        <p class="mb-0">Please contact your administrator if you believe this is an error.</p>
+      </div>
+      <a *ngIf="!isUnauthenticated" routerLink="/metrics" class="link-primary">Go to My Metrics</a>
+    </div>
+  </div>
+</div>

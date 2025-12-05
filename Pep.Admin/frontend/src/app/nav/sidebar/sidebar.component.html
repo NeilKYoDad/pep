@@ -1,0 +1,21 @@
+<nav class="sidebar d-flex flex-column" aria-label="Primary">
+  <ul class="nav flex-column mb-2">
+    <ng-container *ngFor="let link of links">
+      <li class="nav-item" [hidden]="!link.canShow">
+        <a [routerLink]="link.path"
+           routerLinkActive="active"
+           [routerLinkActiveOptions]="{ exact: link.exact ?? false }"
+           class="nav-link d-flex align-items-center justify-content-center gap-1">
+          <i *ngIf="link.icon" class="bi nav-icon" [ngClass]="link.icon" aria-hidden="true"></i>
+          <span class="link-text text-center">{{ link.label }}</span>
+        </a>
+      </li>
+    </ng-container>
+  </ul>
+  <div class="mt-auto mb-2">
+    <a href="https://example.com/user-guide" target="_blank" class="nav-link d-flex align-items-center justify-content-center gap-1 text-decoration-none">
+      <i class="bi bi-book nav-icon" aria-hidden="true"></i>
+      <span class="link-text text-center">User Guide</span>
+    </a>
+  </div>
+</nav>

@@ -1,0 +1,91 @@
+<div class="container mt-4">
+  <h2>Web API Testing</h2>
+  <p class="lead">Test the backend API endpoints with different role requirements.</p>
+
+  <!-- API Testing Buttons -->
+  <div class="mb-4">
+    <h4>Available Endpoints:</h4>
+    <div class="btn-group-vertical d-grid gap-2 d-md-block">
+      <button (click)="callWebApiNoRole()" class="btn btn-success me-2 mb-2">
+        <i class="bi bi-unlock"></i> Call API - /AllRoles (No authentication required)
+      </button>
+      <button (click)="callWebApiViewer()" class="btn btn-primary me-2 mb-2"
+        [title]="!roles.includes('Viewer') ? 'Requires Viewer role' : ''">
+        <i class="bi bi-eye"></i> Call API - /Viewer (Viewer role required)
+      </button>
+      <button (click)="callWebApiEditor()" class="btn btn-info me-2 mb-2"
+        [title]="!roles.includes('Editor') ? 'Requires Editor role' : ''">
+        <i class="bi bi-pencil"></i> Call API - /Editor (Editor role required)
+      </button>
+      <button (click)="callWebApiAdmin()" class="btn btn-warning me-2 mb-2"
+        [title]="!roles.includes('Admin') ? 'Requires Admin role' : ''">
+        <i class="bi bi-shield"></i> Call API - /Admin (Admin role required)
+      </button>
+      <button (click)="callWebApiError()" class="btn btn-danger me-2 mb-2">
+        <i class="bi bi-exclamation-triangle"></i> Call API - /Error (Throws an exception on the server)
+      </button>
+    </div>
+  </div>
+
+  <!-- API Results Section -->
+  <div class="mt-4">
+    <!-- Success Results -->
+    @if (weatherForecasts.length > 0) {
+    <div class="alert alert-success">
+      <h4><i class="bi bi-check-circle"></i> API Call Successful!</h4>
+      <p><strong>Logged in as:</strong> {{ userName }}</p>
+      <h5>Weather Forecasts:</h5>
+      <div class="table-responsive">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>Date</th>
+              <th>Temperature (°C)</th>
+              <th>Temperature (°F)</th>
+              <th>Summary</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (forecast of weatherForecasts; track forecast.date) {
+            <tr>
+              <td>{{ forecast.date | date : 'mediumDate' }}</td>
+              <td>{{ forecast.temperatureC }}°C</td>
+              <td>{{ forecast.temperatureF }}°F</td>
+              <td>{{ forecast.summary }}</td>
+            </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    </div>
+    }
+
+    <!-- Error Results -->
+    @if (apiCallError) {
+    <div class="alert alert-danger">
+      <h4><i class="bi bi-exclamation-triangle"></i> API Call Failed!</h4>
+      <p class="mb-0">{{ apiCallError }}</p>
+    </div>
+    }
+
+    <!-- Initial State -->
+    @if (weatherForecasts.length === 0 && !apiCallError) {
+    <div class="alert alert-secondary">
+      <p class="mb-0"><i class="bi bi-info-circle"></i> Click one of the "Call API" buttons above to test the backend
+        endpoints.</p>
+    </div>
+    }
+  </div>
+
+  <!-- Role Information -->
+  <div class="alert alert-info">
+    <h5>All Roles (assigned roles in bold):</h5>
+    <div class="list-unstyled">
+      <div *ngFor="let r of displayRoles" [ngClass]="{'text-muted': !roles.includes(r), 'text-success fw-bold fs-5': roles.includes(r)}">
+        <a *ngIf="getRoleRoute(r)" [routerLink]="getRoleRoute(r)" class="text-decoration-none">{{ r }}</a>
+        <span *ngIf="!getRoleRoute(r)">{{ r }}</span>
+      </div>
+      <div *ngIf="displayRoles.length === 0" class="text-muted">No roles assigned</div>
+    </div>
+  </div>  
+</div>

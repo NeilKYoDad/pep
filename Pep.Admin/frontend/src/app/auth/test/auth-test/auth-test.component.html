@@ -1,0 +1,23 @@
+<h2>Auth Test Endpoints</h2>
+<div class="auth-test-buttons">
+  <a [routerLink]="'/is-creator'" class="btn btn-link">Go to IsCreator Guard Test</a>
+  <button class="btn btn-primary btn-sm d-flex align-items-center" (click)="call('me')">Get My Access</button>
+  <button class="btn btn-primary btn-sm d-flex align-items-center" (click)="call('noauthneeded')">No Auth Needed</button>
+  <button class="btn btn-primary btn-sm d-flex align-items-center" (click)="call('administrator')">Is Administrator</button>
+  <button class="btn btn-primary btn-sm d-flex align-items-center" (click)="call('madeuprolenotindatabase')">Made Up Role Not In Database</button>
+</div>
+<div class="auth-test-result">
+
+  <div class="auth-test-result">
+    <p>Staff Access (from AuthService) = this is auto loaded by the auth service on every page refresh 👍</p>
+    <pre *ngIf="staffAccess">{{ staffAccess | json }}</pre>
+  </div>
+
+  <div *ngIf="error" class="text-danger">
+    <strong>Error:</strong>
+    <pre>{{ error }}</pre>
+  </div>
+  <div *ngIf="result && !error">
+    <pre>{{ result | json }}</pre>
+  </div>
+</div>

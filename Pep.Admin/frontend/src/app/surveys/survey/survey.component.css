@@ -1,0 +1,33 @@
+.table-primary {
+  background-color: rgba(13, 110, 253, 0.1);
+}
+
+.badge {
+  font-size: 0.875rem;
+  padding: 0.35em 0.65em;
+}
+
+.card-header {
+  font-weight: 500;
+}
+
+.btn-outline-primary:hover {
+  color: #fff;
+}
+
+.page-info {
+  display: inline-flex;
+  align-items: center;
+  height: 2.5rem;
+  padding: 0 0.25rem 1rem;
+}
+
+.survey-description {
+  max-width: 100%;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #ffffff80;
+  margin-top: 0.25rem;
+  font-size: 0.875em;
+}
