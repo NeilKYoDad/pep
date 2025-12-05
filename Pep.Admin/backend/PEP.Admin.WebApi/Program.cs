@@ -40,7 +40,6 @@ builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 builder.Services.AddAuthorization();
 
 // Configure CORS to allow your SPA to make requests to this API
-// IMPORTANT: In a production environment, replace "*" with the specific URL(s) of your Angular SPA.
 builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(
